@@ -1,0 +1,60 @@
+---
+import { ViewTransitions } from "astro:transitions";
+import { SEO } from "astro-seo";
+import Header from "./Header/index.astro";
+import "@/styles/global.css";
+
+export interface Props {
+	title?: string;
+	description?: string;
+}
+
+const iconPath = "/favicon.png";
+
+const requestUrl = Astro.request.url;
+
+const ogpIconPath = `${requestUrl}${iconPath}`;
+
+export const defaultTitle = "Evex Land";
+export const defaultDescription =
+	"「Evex」は日本の開発者・技術者で構成されたグループです。様々なプロダクトの開発や、活動を行っています。";
+
+const { title = defaultTitle, description = defaultDescription } = Astro.props;
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<SEO
+			{title}
+			{description}
+			openGraph={{
+				basic: {
+					title,
+					type: "website",
+					image: ogpIconPath,
+				},
+			}}
+			twitter={{
+				creator: "@amex2189",
+				card: "summary_large_image",
+				site: "@amex2189",
+				image: ogpIconPath,
+				imageAlt: `${title} Logo`,
+				title,
+				description,
+			}}
+			extend={{
+				link: [{ rel: "icon", href: iconPath }],
+				meta: [],
+			}}
+		/>
+		<ViewTransitions transition:animate={"fade"} />
+	</head>
+	<body>
+		<Header />
+		<slot />
+	</body>
+</html>
